@@ -14,15 +14,24 @@ app.get "/api/ping", (req, res) ->
 io.sockets.on 'connection', (socket) ->
   # console.log "Socket connected: #{socket.id}"
 
+  socket.on "join", (user) ->
+    socket.set("user", user)
+
+    io.sockets.emit "message", {
+      from : "Parrot"
+      message : "User #{user} joined the chat! Welcome to Parrot ;]"
+    }
+
+  socket.on "disconnect", () ->
+    socket.get 'user', (err, user) ->
+      io.sockets.emit "message", {
+        from : "Parrot"
+        message : "User #{user} left the chat!"
+      }
+
   socket.on "message", (msg) ->
     io.sockets.emit "message", msg
     # console.log "MESSAGE -> ", msg
-
-  socket.on "join", (user) ->
-    io.sockets.emit "message", {
-      from : "Parrot"
-      message : "User #{user} joined the chat!"
-    }
 
 server.listen(3300)
 module.exports = app
