@@ -1,0 +1,20 @@
+{
+  "name": "parrot",
+  "version": "0.0.1",
+  "authors": [
+    "André Gil <hey@andregil.org>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.2.14",
+    "angular-route": "~1.2.14"
+  }
+}

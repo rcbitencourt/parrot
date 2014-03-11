@@ -13,9 +13,24 @@ gulp.task('coffee', function() {
     .pipe( gulp.dest('build') );
 });
 
-gulp.task('default', ['coffee'], function() {
+gulp.task('html', function() {
 
-  var watcher = gulp.watch(coffeeSrc, ['coffee']);
+  gulp.src( '*.html' )
+    .pipe( gulp.dest('build/client') );
+
+  gulp.src( './client/views/*.html' )
+    .pipe( gulp.dest('build/client/views') );
+
+  // TODO: Remove later, change to other plugin
+  gulp.src( 'bower_components/**/*' )
+    .pipe( gulp.dest('build/client/bower_components') );
+});
+
+gulp.task('build', ['coffee', 'html']);
+
+gulp.task('default', ['build'], function() {
+
+  var watcher = gulp.watch(coffeeSrc, ['build']);
 
   watcher.on('change', function(e) {
     gutil.log('File ' + e.path + ' was ' + e.type + ', building again...');
