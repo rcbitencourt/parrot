@@ -1,0 +1,18 @@
+{
+  "name": "parrot",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "André Gil <hey@andregil.org>",
+  "license": "MIT",
+  "dependencies": {
+    "gulp": "^3.5.5",
+    "gulp-coffee": "^1.4.1",
+    "gulp-util": "^2.2.14",
+    "express": "^3.5.0",
+    "gulp-nodemon": "^1.0.2"
+  }
+}
