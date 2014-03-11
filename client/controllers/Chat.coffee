@@ -17,6 +17,8 @@ angular.module('app')
           $scope.messages.push msg
           autoScroll() if autoScrollAfter
 
+      socket.emit "join", $routeParams.user
+
     $scope.messageKeyDown = (e) ->
       if e.keyCode == 13
 

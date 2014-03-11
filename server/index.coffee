@@ -18,5 +18,11 @@ io.sockets.on 'connection', (socket) ->
     io.sockets.emit "message", msg
     # console.log "MESSAGE -> ", msg
 
+  socket.on "join", (user) ->
+    io.sockets.emit "message", {
+      from : "Parrot"
+      message : "User #{user} joined the chat!"
+    }
+
 server.listen(3300)
 module.exports = app
