@@ -13,6 +13,10 @@ angular.module('app')
           $scope.messages.push msg
           autoScroll() if autoScrollAfter
 
+          if !pageFocused
+            unreadCount++
+            updateUnreadCount()
+
       socket.emit "join", $routeParams.user
 
     $scope.messageKeyDown = (e) ->
@@ -37,3 +41,20 @@ angular.module('app')
         msgContainer = $(".messages");
         msgContainer.scrollTop( msgContainer[0].scrollHeight )
       , 200
+
+    pageFocused = true
+    unreadCount = 0
+
+    $(window).on "blur", (e) ->
+      pageFocused = false
+
+    $(window).on "focus", (e) ->
+      unreadCount = 0
+      pageFocused = true
+      updateUnreadCount()
+
+    updateUnreadCount = () ->
+      if unreadCount > 0
+        document.title = "(#{ unreadCount }) Parrot";
+      else
+        document.title = "Parrot";
