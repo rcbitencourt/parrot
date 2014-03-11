@@ -3,12 +3,8 @@
 angular.module('app')
   .controller 'ChatController', ($scope, $routeParams) ->
 
-    $scope.messages = [{
-      from : "Parrot",
-      message : "Hey #{$routeParams.user}! Welcome to Parrot ;]"
-    }]
-
-    socket = io.connect('http://localhost:3300')
+    $scope.messages = []
+    socket = io.connect()
 
     socket.on 'connect', () ->
       socket.on 'message', (msg) ->
