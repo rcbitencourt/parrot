@@ -1,5 +1,5 @@
 <ul class="messages">
-  <li ng-repeat="msg in messages">
+  <li ng-repeat="msg in messages" ng-class="{ lastUnread: msg.lastUnread }">
     <b>{{ msg.from }} :</b> {{ msg.message }}
   </li>
 </ul>

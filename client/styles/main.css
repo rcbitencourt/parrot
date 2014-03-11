@@ -17,6 +17,12 @@ body {
   bottom: 50px;
 }
 
+.lastUnread {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #CACACA;
+  margin-bottom: 10px;
+}
+
 .message-box {
   position: fixed;
   left: 10px;

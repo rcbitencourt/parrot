@@ -47,6 +47,7 @@ angular.module('app')
 
     $(window).on "blur", (e) ->
       pageFocused = false
+      drawLastMessageLine()
 
     $(window).on "focus", (e) ->
       unreadCount = 0
@@ -58,3 +59,7 @@ angular.module('app')
         document.title = "(#{ unreadCount }) Parrot";
       else
         document.title = "Parrot";
+
+    drawLastMessageLine = () ->
+      for msg, index in $scope.messages
+        msg.lastUnread = ( index == $scope.messages.length - 1 )
