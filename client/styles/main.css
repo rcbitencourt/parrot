@@ -1,0 +1,30 @@
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+.messages {
+  position: fixed;
+  overflow: auto;
+  background-color: #FAFAFA;
+  margin: 0;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 50px;
+}
+
+.message-box {
+  position: fixed;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+}
+
+.message-text {
+  width: 100%;
+  font-size: 16px;
+}

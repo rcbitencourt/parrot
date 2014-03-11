@@ -13,6 +13,7 @@
     "gulp-coffee": "^1.4.1",
     "gulp-util": "^2.2.14",
     "express": "^3.5.0",
-    "gulp-nodemon": "^1.0.2"
+    "gulp-nodemon": "^1.0.2",
+    "socket.io": "^0.9.16"
   }
 }

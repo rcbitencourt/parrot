@@ -1,0 +1,9 @@
+<ul class="messages">
+  <li ng-repeat="msg in messages">
+    <b>{{ msg.from }} :</b> {{ msg.message }}
+  </li>
+</ul>
+
+<div class="message-box">
+  <input class="message-text" ng-model="message" ng-keydown="messageKeyDown($event)" />
+</div>
