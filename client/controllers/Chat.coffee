@@ -26,7 +26,7 @@ angular.module('app')
         lastMessage = $scope.messages[ $scope.messages.length - 1 ]
 
       if lastMessage and lastMessage.from == msg.from
-        lastMessage.date = lastMessage.date
+        lastMessage.date = msg.date
         lastMessage.message += "<br/>" + msg.message;
       else
         $scope.messages.push msg
