@@ -19,14 +19,14 @@ io.sockets.on 'connection', (socket) ->
 
     io.sockets.emit "message", {
       from : "Parrot"
-      message : "User #{user} joined the chat! Welcome to Parrot ;]"
+      message : "Hey, <b>#{user}</b> have joined the room!"
     }
 
   socket.on "disconnect", () ->
     socket.get 'user', (err, user) ->
       io.sockets.emit "message", {
         from : "Parrot"
-        message : "User #{user} left the chat!"
+        message : "User <b>#{user}</b> have left the room!"
       }
 
   socket.on "message", (msg) ->
