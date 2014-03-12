@@ -26,7 +26,7 @@ angular.module('app')
       if $scope.messages.length > 0
         lastMessage = $scope.messages[ $scope.messages.length - 1 ]
 
-      if lastMessage and lastMessage.from == msg.from and pageFocused
+      if lastMessage and lastMessage.from == msg.from and !lastMessage.lastUnread
         lastMessage.date = msg.date
         lastMessage.message += "<br/>" + msg.message;
       else
