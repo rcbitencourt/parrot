@@ -21,6 +21,7 @@ angular.module('app')
 
     addMessage = (msg) ->
       lastMessage = null
+      msg.message = preParseMessage(msg.message)
 
       if $scope.messages.length > 0
         lastMessage = $scope.messages[ $scope.messages.length - 1 ]
@@ -30,6 +31,9 @@ angular.module('app')
         lastMessage.message += "<br/>" + msg.message;
       else
         $scope.messages.push msg
+
+    preParseMessage = (msg) ->
+      linkify(msg)
 
     $scope.parseMessage = (msg) ->
       $sce.trustAsHtml(msg)
