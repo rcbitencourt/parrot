@@ -10,11 +10,23 @@ body {
   position: fixed;
   overflow: auto;
   background-color: #FAFAFA;
+  list-style-type: none;
   margin: 0;
+  padding: 0;
   top: 10px;
   left: 10px;
   right: 10px;
   bottom: 50px;
+}
+
+.message .time {
+  font-size: 10px;
+  color: #CACACA;
+}
+
+.message .from {
+  border-left: 1px solid #CACACA;
+  padding-left: 5px;
 }
 
 .message .content {
