@@ -17,6 +17,11 @@ body {
   bottom: 50px;
 }
 
+.message .content {
+  display: inline-block;
+  vertical-align: top;
+}
+
 .lastUnread {
   padding-bottom: 10px;
   border-bottom: 1px solid #CACACA;

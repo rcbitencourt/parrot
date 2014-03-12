@@ -1,6 +1,6 @@
 <ul class="messages">
-  <li ng-repeat="msg in messages" ng-class="{ lastUnread: msg.lastUnread }">
-    <b>{{ msg.from }} :</b> {{ msg.message }}
+  <li class="message" ng-repeat="msg in messages" ng-class="{ lastUnread: msg.lastUnread }">
+    <b class="from">{{ msg.from }} :</b> <div class="content" ng-bind-html="parseMessage(msg.message)" />
   </li>
 </ul>
 
