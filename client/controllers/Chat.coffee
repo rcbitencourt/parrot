@@ -67,6 +67,7 @@ angular.module('app')
       unreadCount = 0
       pageFocused = true
       updateUnreadCount()
+      $(".message-text").focus()
 
     updateUnreadCount = () ->
       if unreadCount > 0
