@@ -34,6 +34,10 @@ body {
   vertical-align: top;
 }
 
+.message .content img {
+  max-width: 800px;
+}
+
 .lastUnread {
   padding-bottom: 10px;
   border-bottom: 1px solid #CACACA;
