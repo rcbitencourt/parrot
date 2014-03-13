@@ -87,10 +87,33 @@ angular.module('app')
       updateUnreadCount()
       $(".message-text").focus()
 
+    alternateCount = 0
+    alternateInterval = null
+
+    alternateTitle = () ->
+
+      clearInterval( alternateInterval )
+      alternateCount = 0
+
+      alternateInterval = setInterval () ->
+        if alternateCount < 6
+          if document.title.indexOf("Parrot") > -1
+            document.title = "(#{ unreadCount }) <--"
+          else
+            document.title = "(#{ unreadCount }) Parrot"
+
+        if alternateCount >= 20
+          alternateCount = 0
+
+        alternateCount++
+      , 1000
+
     updateUnreadCount = () ->
       if unreadCount > 0
         document.title = "(#{ unreadCount }) Parrot";
+        alternateTitle()
       else
+        clearInterval( alternateInterval )
         document.title = "Parrot";
 
     drawLastMessageLine = () ->
