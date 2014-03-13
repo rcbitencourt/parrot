@@ -44,5 +44,5 @@ gulp.task('default', ['build'], function() {
     gutil.log('File ' + e.path + ' was ' + e.type + ', building again...');
   });
 
-  nodemon({ script: 'build/server/index.js', ext: 'js' });
+  nodemon({ script: 'build/server/index.js', ext: 'js', watch: ['build/server'] });
 });
