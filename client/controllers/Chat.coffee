@@ -43,6 +43,8 @@ angular.module('app')
 
         return "<a href='#{url}' target='_blank'>#{url}</a>"
 
+      msg = msg.replace(/\n/g, "<br/>")
+
     $scope.parseMessage = (msg) ->
       $sce.trustAsHtml(msg)
 

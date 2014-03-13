@@ -7,5 +7,5 @@
 </ul>
 
 <div class="message-box">
-  <input class="message-text" ng-model="message" ng-keydown="messageKeyDown($event)" />
+  <textarea class="message-text" ng-model="message" ng-keyup="messageKeyDown($event)"></textarea>
 </div>
