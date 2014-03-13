@@ -102,10 +102,10 @@ angular.module('app')
           else
             document.title = "(#{ unreadCount }) Parrot"
 
-        if alternateCount >= 20
-          alternateCount = 0
-
         alternateCount++
+
+        if alternateCount > 20
+          alternateCount = 0
       , 1000
 
     updateUnreadCount = () ->
