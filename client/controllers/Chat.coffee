@@ -4,26 +4,21 @@ angular.module('app')
   .controller 'ChatController', ($scope, $routeParams, $sce) ->
 
     $scope.messages = []
-    firstConnect = true
     socket = io.connect()
 
     socket.on 'connect', () ->
-
-      if firstConnect
-        socket.on 'message', (msg) ->
-          $scope.$apply () ->
-
-            autoScrollAfter = shouldAutoScroll()
-            addMessage(msg)
-            autoScroll() if autoScrollAfter
-
-            if !pageFocused
-              unreadCount++
-              updateUnreadCount()
-
-      firstConnect = false
-
       socket.emit "join", $routeParams.user
+
+    socket.on 'message', (msg) ->
+      $scope.$apply () ->
+
+        autoScrollAfter = shouldAutoScroll()
+        addMessage(msg)
+        autoScroll() if autoScrollAfter
+
+        if !pageFocused
+          unreadCount++
+          updateUnreadCount()
 
     addMessage = (msg) ->
       lastMessage = null
