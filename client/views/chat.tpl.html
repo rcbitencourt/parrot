@@ -1,8 +1,11 @@
 <ul class="messages">
   <li class="message" ng-repeat="msg in messages" ng-class="{ lastUnread: msg.lastUnread }">
     <small class="time">{{ msg.date | time }}</small>
-    <b class="from">{{ msg.from }} :</b>
-    <div class="content" ng-bind-html="parseMessage(msg.message)" />
+    <img class="avatar" ng-src="{{ msg.from.photo }}" />
+    <div class="content">
+      <b class="from">{{ msg.from.name | nameFilter }} :</b>
+      <div class="message" ng-bind-html="parseMessage(msg.message)" />
+    </div>
   </li>
 </ul>
 

@@ -5,8 +5,11 @@ Conf = require('./conf')
 
 serverMessage = (msg) ->
   {
-    from : "Parrot"
-    message : msg,
+    from : {
+      name : "Parrot"
+      photo : "img/parrot_icon.jpg"
+    }
+    message : msg
     date : new Date()
   }
 
@@ -56,7 +59,7 @@ class Socket
         socket.get 'user', (err, user) ->
           if user
             msg.date = new Date()
-            msg.from = user.name
+            msg.from = user
             io.sockets.emit "message", msg
             # console.log "MESSAGE -> ", msg
 

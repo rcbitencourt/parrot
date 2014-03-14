@@ -28,13 +28,20 @@ gulp.task('html', function() {
     .pipe( gulp.dest('build/client/bower_components') );
 });
 
+gulp.task('img', function() {
+
+  gulp.src( 'client/img/*' )
+    .pipe( gulp.dest('build/client/img') );
+
+});
+
 gulp.task('style', function() {
 
   gulp.src( styleSrc )
     .pipe( gulp.dest('build/client/styles') );
 });
 
-gulp.task('build', ['coffee', 'html', 'style']);
+gulp.task('build', ['coffee', 'html', 'style', 'img']);
 
 gulp.task('default', ['build'], function() {
 
