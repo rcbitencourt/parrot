@@ -1,0 +1,18 @@
+{
+  "server" : {
+    "host" : "http://localhost",
+    "sessionSecret" : "i like turtles!"
+  },
+  "debugUser" : {
+    "name" : "Gil",
+    "photo" : "https://pbs.twimg.com/profile_images/1665930608/DSC_0067_square.jpg"
+  },
+  "twitter" : {
+    "consumerKey" : "",
+    "consumerSecret" : ""
+  },
+  "facebook" : {
+    "clientID" : "",
+    "clientSecret" : ""
+  }
+}

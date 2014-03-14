@@ -1,6 +1,7 @@
 express = require('express')
 connect = require('connect')
 http = require('http')
+Conf = require('./conf')
 cookie = require('cookie')
 socketio = require('socket.io')
 passport = require('passport')
@@ -11,6 +12,9 @@ sessionStore = new express.session.MemoryStore();
 app = express()
 server = http.createServer(app)
 io = socketio.listen(server)
+serverHost = Conf.get("server:host")
+serverPort = Conf.get("server:port")
+sessionSecret = Conf.get("server:sessionSecret")
 
 passport.serializeUser (user, done) ->
 
@@ -29,9 +33,9 @@ passport.deserializeUser (user, done) ->
   done null, user
 
 passport.use new TwitterStrategy({
-    consumerKey: ""
-    consumerSecret: ""
-    callbackURL: "http://localhost:3300/auth/twitter/callback"
+    consumerKey: Conf.get("twitter:consumerKey")
+    consumerSecret: Conf.get("twitter:consumerSecret")
+    callbackURL: "#{serverHost}:#{serverPort}/auth/twitter/callback"
   },
   (token, tokenSecret, profile, done) ->
     process.nextTick () ->
@@ -39,9 +43,9 @@ passport.use new TwitterStrategy({
 )
 
 passport.use new FacebookStrategy({
-    clientID: ""
-    clientSecret: ""
-    callbackURL: "http://localhost:3300/auth/facebook/callback"
+    clientID: Conf.get("facebook:clientID")
+    clientSecret: Conf.get("facebook:clientSecret")
+    callbackURL: "#{serverHost}:#{serverPort}/auth/facebook/callback"
   },
   (accessToken, refreshToken, profile, done) ->
     process.nextTick () ->
@@ -49,6 +53,10 @@ passport.use new FacebookStrategy({
 )
 
 whenAuthorized = (req, res, callback) ->
+
+  debugUser = Conf.get("debugUser")
+  req.user = req.session.passport.user = debugUser if debugUser
+
   if !req.user
     res.send(401, 'Unauthorized');
   else
@@ -59,7 +67,7 @@ app.configure () ->
   app.use(express.cookieParser())
   app.use(express.urlencoded())
   app.use(express.json())
-  app.use(express.session({ store: sessionStore, secret: 'keyboard cat', key: 'connect.sid' }))
+  app.use(express.session({ store: sessionStore, secret: sessionSecret, key: 'connect.sid' }))
 
   app.use(passport.initialize())
   app.use(passport.session())
@@ -103,7 +111,7 @@ io.configure () ->
 
       handshakeData.cookie = cookie.parse(handshakeData.headers.cookie);
       sid = handshakeData.cookie['connect.sid']
-      handshakeData.sessionID = connect.utils.parseSignedCookies(handshakeData.cookie, 'keyboard cat')['connect.sid']
+      handshakeData.sessionID = connect.utils.parseSignedCookies(handshakeData.cookie, sessionSecret)['connect.sid']
 
       sessionStore.get handshakeData.sessionID, (err, session) ->
         if err
@@ -140,5 +148,5 @@ io.sockets.on 'connection', (socket) ->
         io.sockets.emit "message", msg
         # console.log "MESSAGE -> ", msg
 
-server.listen(3300)
+server.listen(serverPort)
 module.exports = app
