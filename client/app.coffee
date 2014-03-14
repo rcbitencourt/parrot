@@ -6,11 +6,10 @@ angular.module('app', [
   .config ($routeProvider, $httpProvider) ->
 
     $routeProvider
-      .when '/:user',
+      .when '/',
         templateUrl: 'views/chat.tpl.html'
         controller: 'ChatController'
       .otherwise
-        redirectTo: '/anonymous'
-
+        redirectTo: '/'
 
     $httpProvider.defaults.headers.common = { 'Content-Type' : 'application/json' }
