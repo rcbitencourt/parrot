@@ -5,6 +5,7 @@ cookie = require('cookie')
 socketio = require('socket.io')
 passport = require('passport')
 TwitterStrategy = require('passport-twitter').Strategy
+FacebookStrategy = require('passport-facebook').Strategy
 sessionStore = new express.session.MemoryStore();
 
 app = express()
@@ -12,10 +13,17 @@ server = http.createServer(app)
 io = socketio.listen(server)
 
 passport.serializeUser (user, done) ->
-  done null, {
+
+  profile = {
     name : user.displayName
-    photo : user.photos[0]?.value
   }
+
+  if user.profileUrl?.indexOf('facebook') > -1
+    profile.photo = "http://graph.facebook.com/#{ user.id }/picture?type=large"
+  else
+    profile.photo = user.photos[0]?.value
+
+  done null, profile
 
 passport.deserializeUser (user, done) ->
   done null, user
@@ -26,6 +34,16 @@ passport.use new TwitterStrategy({
     callbackURL: "http://localhost:3300/auth/twitter/callback"
   },
   (token, tokenSecret, profile, done) ->
+    process.nextTick () ->
+      return done(null, profile)
+)
+
+passport.use new FacebookStrategy({
+    clientID: ""
+    clientSecret: ""
+    callbackURL: "http://localhost:3300/auth/facebook/callback"
+  },
+  (accessToken, refreshToken, profile, done) ->
     process.nextTick () ->
       return done(null, profile)
 )
@@ -47,6 +65,7 @@ app.configure () ->
   app.use(passport.session())
 
 app.use('/', express.static(__dirname + '/../client'))
+
 app.get('/auth/twitter', passport.authenticate('twitter'))
 app.get('/auth/twitter/callback',
   passport.authenticate('twitter', {
@@ -54,6 +73,15 @@ app.get('/auth/twitter/callback',
     failureRedirect: '/login'
   })
 )
+
+app.get('/auth/facebook', passport.authenticate('facebook'))
+app.get('/auth/facebook/callback',
+  passport.authenticate('facebook', {
+    successRedirect: '/'
+    failureRedirect: '/login'
+  })
+)
+
 app.get "/auth/me", (req, res) ->
   whenAuthorized req, res, (user) ->
     res.json(200, user)
