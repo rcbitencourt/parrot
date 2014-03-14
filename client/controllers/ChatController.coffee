@@ -63,6 +63,7 @@ angular.module('app')
           message : $scope.message
         }
 
+        e.preventDefault()
         $scope.message = ""
 
     shouldAutoScroll = () ->
