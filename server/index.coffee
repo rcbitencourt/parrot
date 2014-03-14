@@ -1,66 +1,17 @@
 express = require('express')
 connect = require('connect')
 http = require('http')
-Conf = require('./conf')
 cookie = require('cookie')
+Conf = require('./conf')
+Auth = require('./auth')
 socketio = require('socket.io')
-passport = require('passport')
-TwitterStrategy = require('passport-twitter').Strategy
-FacebookStrategy = require('passport-facebook').Strategy
 sessionStore = new express.session.MemoryStore();
 
 app = express()
 server = http.createServer(app)
 io = socketio.listen(server)
-serverHost = Conf.get("server:host")
 serverPort = Conf.get("server:port")
 sessionSecret = Conf.get("server:sessionSecret")
-
-passport.serializeUser (user, done) ->
-
-  profile = {
-    name : user.displayName
-  }
-
-  if user.profileUrl?.indexOf('facebook') > -1
-    profile.photo = "http://graph.facebook.com/#{ user.id }/picture?type=large"
-  else
-    profile.photo = user.photos[0]?.value
-
-  done null, profile
-
-passport.deserializeUser (user, done) ->
-  done null, user
-
-passport.use new TwitterStrategy({
-    consumerKey: Conf.get("twitter:consumerKey")
-    consumerSecret: Conf.get("twitter:consumerSecret")
-    callbackURL: "#{serverHost}:#{serverPort}/auth/twitter/callback"
-  },
-  (token, tokenSecret, profile, done) ->
-    process.nextTick () ->
-      return done(null, profile)
-)
-
-passport.use new FacebookStrategy({
-    clientID: Conf.get("facebook:clientID")
-    clientSecret: Conf.get("facebook:clientSecret")
-    callbackURL: "#{serverHost}:#{serverPort}/auth/facebook/callback"
-  },
-  (accessToken, refreshToken, profile, done) ->
-    process.nextTick () ->
-      return done(null, profile)
-)
-
-whenAuthorized = (req, res, callback) ->
-
-  debugUser = Conf.get("debugUser")
-  req.user = req.session.passport.user = debugUser if debugUser
-
-  if !req.user
-    res.send(401, 'Unauthorized');
-  else
-    callback(req.user)
 
 app.configure () ->
   # app.use(express.logger());
@@ -69,30 +20,8 @@ app.configure () ->
   app.use(express.json())
   app.use(express.session({ store: sessionStore, secret: sessionSecret, key: 'connect.sid' }))
 
-  app.use(passport.initialize())
-  app.use(passport.session())
-
 app.use('/', express.static(__dirname + '/../client'))
-
-app.get('/auth/twitter', passport.authenticate('twitter'))
-app.get('/auth/twitter/callback',
-  passport.authenticate('twitter', {
-    successRedirect: '/'
-    failureRedirect: '/'
-  })
-)
-
-app.get('/auth/facebook', passport.authenticate('facebook'))
-app.get('/auth/facebook/callback',
-  passport.authenticate('facebook', {
-    successRedirect: '/'
-    failureRedirect: '/'
-  })
-)
-
-app.get "/auth/me", (req, res) ->
-  whenAuthorized req, res, (user) ->
-    res.json(200, user)
+Auth.configureApp(app)
 
 app.get "/api/ping", (req, res) ->
   res.json(200, "pong! :]")
@@ -129,7 +58,7 @@ io.sockets.on 'connection', (socket) ->
   # console.log "Socket connected: #{socket.id}"
 
   socket.on "join", () ->
-    user = socket.handshake.session.passport.user
+    user = socket.handshake.session.passport?.user
 
     if user
       socket.set("user", user)
