@@ -8,7 +8,7 @@ angular.module('app')
 
     AuthService.me()
       .success (user) -> $scope.user = user
-      .error (message, code) -> window.location.href = "/auth/twitter"
+      .error (message, code) -> $location.path("/login")
 
     socket = io.connect null, {
       transports: ['websocket', 'htmlfile', 'xhr-multipart', 'xhr-polling', 'jsonp-polling']#, 'flashsocket']

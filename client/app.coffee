@@ -9,6 +9,9 @@ angular.module('app', [
       .when '/',
         templateUrl: 'views/chat.tpl.html'
         controller: 'ChatController'
+      .when '/login',
+        templateUrl: 'views/login.tpl.html'
+        controller: 'LoginController'
       .otherwise
         redirectTo: '/'
 
