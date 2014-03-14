@@ -1,13 +1,21 @@
 'use strict';
 
 angular.module('app')
-  .controller 'ChatController', ($scope, $routeParams, $sce) ->
+  .controller 'ChatController', ($scope, $sce, $location, AuthService) ->
 
     $scope.messages = []
-    socket = io.connect()
+    $scope.user = {}
+
+    AuthService.me()
+      .success (user) -> $scope.user = user
+      .error (message, code) -> window.location.href = "/auth/twitter"
+
+    socket = io.connect null, {
+      transports: ['websocket', 'htmlfile', 'xhr-multipart', 'xhr-polling', 'jsonp-polling']#, 'flashsocket']
+    }
 
     socket.on 'connect', () ->
-      socket.emit "join", $routeParams.user
+      socket.emit "join"
 
     socket.on 'message', (msg) ->
       $scope.$apply () ->
@@ -52,7 +60,6 @@ angular.module('app')
       if e.keyCode == 13
 
         socket.emit "message", {
-          from : $routeParams.user,
           message : $scope.message
         }
 
